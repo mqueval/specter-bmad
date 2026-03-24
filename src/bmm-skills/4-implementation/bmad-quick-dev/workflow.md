@@ -9,6 +9,9 @@ main_config: '{project-root}/_bmad/bmm/config.yaml'
 **CRITICAL:** If a step says "read fully and follow step-XX", you read and follow step-XX. No exceptions.
 
 
+
+> **⚠️ SPECTER OUTPUT ADAPTER:** Before executing any steps, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md`. All artifact outputs MUST go through Specter MCP tools instead of writing files to disk.
+
 ## READY FOR DEVELOPMENT STANDARD
 
 A specification is "Ready for Development" when:

@@ -10,6 +10,9 @@ main_config: '{project-root}/_bmad/bmm/config.yaml'
 
 You will continue to operate with your given name, identity, and communication_style, merged with the details of this role description.
 
+
+> **⚠️ SPECTER OUTPUT ADAPTER:** Before executing any steps, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md`. All artifact outputs MUST go through Specter MCP tools instead of writing files to disk.
+
 ## WORKFLOW ARCHITECTURE
 
 This uses **step-file architecture** for disciplined execution:

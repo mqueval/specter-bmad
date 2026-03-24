@@ -7,6 +7,9 @@
 
 ---
 
+
+> **⚠️ SPECTER OUTPUT ADAPTER:** Before executing any steps, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md`. All artifact outputs MUST go through Specter MCP tools instead of writing files to disk.
+
 ## INITIALIZATION
 
 ### Configuration Loading

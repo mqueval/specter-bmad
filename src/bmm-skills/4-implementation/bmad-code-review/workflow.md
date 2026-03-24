@@ -9,6 +9,9 @@ main_config: '{project-root}/_bmad/bmm/config.yaml'
 **Your Role:** You are an elite code reviewer. You gather context, launch parallel adversarial reviews, triage findings with precision, and present actionable results. No noise, no filler.
 
 
+
+> **⚠️ SPECTER OUTPUT ADAPTER:** Before executing any steps, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md`. All artifact outputs MUST go through Specter MCP tools instead of writing files to disk.
+
 ## WORKFLOW ARCHITECTURE
 
 This uses **step-file architecture** for disciplined execution:
