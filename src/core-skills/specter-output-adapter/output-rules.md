@@ -2,53 +2,101 @@
 
 ## Rule
 
-This project uses **Specter** as its spec management system. All artifact outputs go to Specter's database via MCP tools instead of files on disk.
+This project uses **Specter** as its spec management system. During the workflow, write files normally as BMAD expects. **At the end of the workflow**, synchronize your results with Specter.
 
-**When a workflow step tells you to:**
-- "Append to {outputFile}" or "Save to {outputFile}" or "Write to {outputFile}"
-- "Write to disk" or "Save content to file"
-- Create or update any file in `_bmad-output/` or `{planning_artifacts}/` or `{implementation_artifacts}/`
+## During the workflow
 
-**You MUST instead:**
-1. Use the MCP tool `specter_save_artifact` to save the content
-2. The `ticketRef` is provided in the workflow context (e.g. `{ticketRef}`)
-3. Map the artifact type from the workflow context:
-   - PRD workflows → type: `prd`
-   - Architecture workflows → type: `architecture`
-   - Epic/story workflows → type: `epic` or `story`
-   - Sprint status → type: `sprint-status`
+Work normally:
+- Write to `_bmad-output/`, `{planning_artifacts}/`, `{implementation_artifacts}/` as instructed by the workflow steps
+- Update YAML frontmatter as normal
+- Read and append to output files as normal
 
-## How to save an artifact
+**Do not call Specter MCP tools during the workflow steps.** Focus on producing the best output.
+
+## At the end of the workflow — Sync with Specter
+
+When all workflow steps are complete, perform these two actions:
+
+### 1. Save the artifact to Specter
+
+Save the final document to Specter's database using `filePath` (the server reads the file directly):
 
 ```
 specter_save_artifact({
   ticketRef: "{ticketRef}",
-  type: "prd",
-  title: "Product Requirements Document",
-  content: "<full markdown content including all appended sections so far>",
-  metadata: { stepsCompleted: ["step-01", "step-02", ...] }
+  type: "<prd|architecture|epic|story|sprint-status>",
+  title: "<document title>",
+  filePath: "<absolute path to the final output file>"
 })
 ```
 
-**Important:** Each call to `specter_save_artifact` sends the **full accumulated content**, not just the new section. The tool does an upsert — it replaces the previous version of the artifact with the updated one.
+Map the artifact type:
+- PRD / product brief → `prd`
+- Architecture / tech-spec → `architecture`
+- Epic or story → `epic` or `story`
+- Sprint status → `sprint-status`
 
-## Tracking stepsCompleted
+### 2. Update the spec with structured data
 
-Instead of updating YAML frontmatter in a file, track `stepsCompleted` in the `metadata` field of `specter_save_artifact`. Each time a step completes and says "update frontmatter", add the step name to the `stepsCompleted` array in metadata.
+Extract key information from your work and update the spec:
 
-## Reading previous content
+```
+specter_update_spec({
+  ticketRef: "{ticketRef}",
+  partial: {
+    context: "<problem statement — why this work exists>",
+    inScope: ["<what is included>", ...],
+    outOfScope: ["<what is excluded>", ...],
+    constraints: ["<technical or business constraints>", ...],
+    acceptanceCriteria: ["<Given/When/Then or criteria>", ...],
+    decisions: [
+      {
+        id: "<unique-id>",
+        title: "<ADR title>",
+        context: "<what prompted this decision>",
+        pros: ["<argument for>", ...],
+        cons: ["<argument against>", ...],
+        decision: "<the decision made>",
+        confidence: "<low|medium|high|unanimous>"
+      }
+    ],
+    risks: [
+      {
+        id: "<unique-id>",
+        description: "<risk description>",
+        mitigation: "<how to mitigate>",
+        severity: "<low|medium|high>"
+      }
+    ],
+    steps: [
+      {
+        number: "01",
+        title: "<implementation step>",
+        description: "<what to do>"
+      }
+    ]
+  }
+})
+```
 
-When a step says "Read {outputFile}" or "Check frontmatter", use `specter_get_spec` to read the current spec state, and check the artifact's content from a previous `specter_save_artifact` call that you have in your conversation context.
+**Only include fields that your workflow produced.** Don't fabricate data for fields you didn't work on.
 
-## Other MCP tools available
+### 3. Advance the spec status
 
-- `specter_get_spec` — Read spec state (context, constraints, DoD, steps, etc.)
-- `specter_update_spec` — Update spec fields (context, constraints, DoD, steps, decisions, risks, etc.)
-- `specter_advance_status` — Transition spec status (draft → specifying → ready → in-progress → review → done)
-- `specter_list_specs` — List all specs, optionally by status
+If the workflow completed successfully:
 
-## What NOT to do
+```
+specter_advance_status({
+  ticketRef: "{ticketRef}",
+  to: "ready"
+})
+```
 
-- Do NOT write files to `_bmad-output/`, `{planning_artifacts}/`, or `{implementation_artifacts}/`
-- Do NOT create markdown files in the repository for spec artifacts
-- Do NOT skip saving — every time a step says "append to document", save via MCP
+## MCP tools available
+
+- `specter_get_spec` — Read current spec state
+- `specter_update_spec` — Update spec fields (partial update)
+- `specter_save_artifact` — Save artifact (use `filePath` for large documents)
+- `specter_advance_status` — Transition spec status
+- `specter_list_specs` — List all specs
+- `specter_add_note` — Add a note to the spec timeline
