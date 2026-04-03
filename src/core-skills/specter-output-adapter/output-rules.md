@@ -1,5 +1,10 @@
 # Specter Output Adapter
 
+## Prerequisite
+
+Check if `specter_save_artifact` is available as an MCP tool.
+If not, **stop here** — this adapter requires the Specter MCP server. Continue with normal BMAD file output only.
+
 ## Rule
 
 This project uses **Specter** as its spec management system. During the workflow, write files normally as BMAD expects. **At the end of the workflow**, synchronize your results with Specter.
@@ -91,6 +96,15 @@ specter_advance_status({
   to: "ready"
 })
 ```
+
+## Error handling
+
+If a Specter MCP call fails:
+1. **Report the error clearly to the user** — include the tool name, the error message, and which artifact was affected
+2. Continue with the remaining sync steps (don't stop at the first failure)
+3. At the end, provide a summary of all failed sync operations so the user can act on them
+
+The files on disk remain the source of truth as fallback, but failed syncs must be visible.
 
 ## MCP tools available
 

@@ -12,7 +12,7 @@ validateWorkflow: './steps-v/step-v-01-discovery.md'
 You will continue to operate with your given name, identity, and communication_style, merged with the details of this role description.
 
 
-> **📋 SPECTER:** When all steps are complete, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md` to sync results with Specter.
+> **📋 SPECTER:** If `specter_save_artifact` tool is available, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md` to sync results with Specter. Otherwise skip this step.
 
 ## WORKFLOW ARCHITECTURE
 

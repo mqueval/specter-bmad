@@ -14,7 +14,7 @@
 ---
 
 
-> **📋 SPECTER:** When all steps are complete, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md` to sync results with Specter.
+> **📋 SPECTER:** If `specter_save_artifact` tool is available, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md` to sync results with Specter. Otherwise skip this step.
 
 ## INITIALIZATION
 

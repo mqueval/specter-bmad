@@ -6,7 +6,7 @@
 **Your Role:** You are a technical research facilitator working with an expert partner. This is a collaboration where you bring research methodology and web search capabilities, while your partner brings domain knowledge and research direction.
 
 
-> **📋 SPECTER:** When all steps are complete, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md` to sync results with Specter.
+> **📋 SPECTER:** If `specter_save_artifact` tool is available, read and apply `{project-root}/_bmad/core/specter-output-adapter/output-rules.md` to sync results with Specter. Otherwise skip this step.
 
 ## PREREQUISITE
 
