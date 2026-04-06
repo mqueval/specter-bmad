@@ -2,7 +2,7 @@
 
 Module BMAD custom Specter — skills et workflows au-dessus du framework BMAD.
 
-## Prérequis
+## Prerequis
 
 - Node.js >= 18
 - BMAD >= 6.2.0 (`npx bmad-method`)
@@ -10,24 +10,20 @@ Module BMAD custom Specter — skills et workflows au-dessus du framework BMAD.
 ## Installation
 
 ```bash
-# 1. Ajouter le module Specter au projet
-npm install github:mqueval/specter-bmad#v1.0.0
+# 1. Cloner le module Specter dans le projet
+git clone --depth 1 --branch v1.0.0 https://github.com/mqueval/specter-bmad.git .specter-bmad
 
 # 2. Installer BMAD avec la surcouche Specter
-npx bmad-method install --custom-content ./node_modules/specter-bmad
+npx bmad-method install --custom-content ./.specter-bmad
 ```
 
-Si le projet n'a pas de `package.json`, initialiser d'abord :
-
-```bash
-npm init -y
-```
+Ajouter `.specter-bmad/` au `.gitignore` du projet consommateur.
 
 ## Mise a jour
 
 ```bash
-npm install github:mqueval/specter-bmad#v1.1.0
-npx bmad-method install --custom-content ./node_modules/specter-bmad
+cd .specter-bmad && git fetch && git checkout v1.1.0 && cd ..
+npx bmad-method install --custom-content ./.specter-bmad
 ```
 
 Pour un quick-update (utilise le cache `_bmad/_config/custom/`) :
@@ -46,7 +42,6 @@ npx bmad-method install --action quick-update
 
 ```
 specter-bmad/
-├── package.json
 ├── README.md
 ├── module.yaml          # code: specter
 ├── module-help.csv      # registre des skills
@@ -74,9 +69,8 @@ Ce module est teste avec BMAD >= 6.2.0. Les skills utilisent les variables BMAD 
 
 1. Creer un dossier dans `skills/` avec un `SKILL.md` (frontmatter `name` + `description`)
 2. Ajouter une entree dans `module-help.csv`
-3. Bump la version dans `package.json`
-4. Tag et push : `git tag vX.Y.Z && git push origin vX.Y.Z`
-5. Dans les projets consommateurs : `npm install github:mqueval/specter-bmad#vX.Y.Z`
+3. Tag et push : `git tag vX.Y.Z && git push origin vX.Y.Z`
+4. Dans les projets consommateurs : `cd .specter-bmad && git fetch && git checkout vX.Y.Z && cd ..`
 
 ## Licence
 
