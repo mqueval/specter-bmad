@@ -1,0 +1,5 @@
+# Specter — BMAD custom module
+# Requires BMAD >= 6.2.0
+code: specter
+name: Specter
+description: Surcouche Specter pour BMAD — skills et workflows custom
